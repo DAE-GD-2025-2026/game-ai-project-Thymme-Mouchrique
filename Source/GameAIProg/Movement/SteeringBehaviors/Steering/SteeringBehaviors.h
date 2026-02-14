@@ -25,4 +25,55 @@ protected:
 	FTargetData Target;
 };
 
-// Your own SteeringBehaviors should follow here...
+class Seek : public ISteeringBehavior
+{
+public:
+	SteeringOutput CalculateSteering(float DeltaT, ASteeringAgent& Agent) override;
+
+};
+
+class Flee : public ISteeringBehavior
+{
+public:
+	SteeringOutput CalculateSteering(float DeltaT, ASteeringAgent& Agent) override;
+};
+
+class Arrive : public ISteeringBehavior
+{
+public:
+	SteeringOutput CalculateSteering(float DeltaT, ASteeringAgent& Agent) override;
+private:
+	float m_SlowRadius{ 250.f };
+	float m_TargetRadius{ 100.f };
+	float m_OriginalMaxSpeed{ -1.f };
+};
+
+class Face : public ISteeringBehavior
+{
+public:
+	SteeringOutput CalculateSteering(float DeltaT, ASteeringAgent& Agent) override;
+};
+
+class Pursuit : public ISteeringBehavior
+{
+public:
+	SteeringOutput CalculateSteering(float DeltaT, ASteeringAgent& Agent) override;
+};
+
+class Evade : public ISteeringBehavior
+{
+public:
+	SteeringOutput CalculateSteering(float DeltaT, ASteeringAgent& Agent) override;
+};
+
+class Wander : public Seek
+{
+public:
+	SteeringOutput CalculateSteering(float DeltaT, ASteeringAgent& Agent) override;
+
+private:
+	float Offset{ 150.f };          // distance in front
+	float Radius{ 80.f };           // circle radius
+	float MaxAngleChange{ 90.f };   // degrees per second
+	float WanderAngle{ 0.f };       // persistent angle
+};
