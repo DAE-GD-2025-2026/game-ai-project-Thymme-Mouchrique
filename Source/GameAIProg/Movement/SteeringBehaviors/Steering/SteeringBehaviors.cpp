@@ -136,7 +136,6 @@ SteeringOutput Pursuit::CalculateSteering(float DeltaT, ASteeringAgent& Agent)
 SteeringOutput Evade::CalculateSteering(float DeltaT, ASteeringAgent& Agent)
 {
     SteeringOutput out{};
-
     out.IsValid = true;
     out.AngularVelocity = 0.f;
 
@@ -145,6 +144,14 @@ SteeringOutput Evade::CalculateSteering(float DeltaT, ASteeringAgent& Agent)
 
     const FVector2D toTarget = targetPos - agentPos;
     const float dist = toTarget.Size();
+
+    constexpr float evadeRadius = 600.f;          
+    if (dist > evadeRadius)
+    {
+        out.IsValid = false;                     
+        out.LinearVelocity = FVector2D::ZeroVector;
+        return out;
+    }
 
     const float evaderSpeed = FMath::Max(Agent.GetMaxLinearSpeed(), 1.f);
     const float timeToReach = dist / evaderSpeed;
@@ -155,7 +162,6 @@ SteeringOutput Evade::CalculateSteering(float DeltaT, ASteeringAgent& Agent)
     out.LinearVelocity = desired.IsNearlyZero() ? FVector2D::ZeroVector : desired.GetSafeNormal();
     return out;
 }
-
 SteeringOutput Wander::CalculateSteering(float DeltaT, ASteeringAgent& Agent)
 {
     float randomDelta = FMath::FRandRange(-MaxAngleChange, MaxAngleChange);
