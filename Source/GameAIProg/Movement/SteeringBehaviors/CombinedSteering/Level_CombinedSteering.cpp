@@ -22,16 +22,13 @@ void ALevel_CombinedSteering::BeginPlay()
 	if (!IsValid(WandererAgent) || !IsValid(CombinedAgent))
 		return;
 
-	// Wanderer: just wander around
 	WandererWander = std::make_unique<Wander>();
 	WandererAgent->SetSteeringBehavior(WandererWander.get());
 
-	// Combined agent: build behaviors
 	SeekBehavior = std::make_unique<Seek>();
 	WanderBehavior = std::make_unique<Wander>();
 	EvadeBehavior = std::make_unique<Evade>();
 
-	// Blended = Seek + Wander (weights adjustable in UI)
 	Blended = std::make_unique<BlendedSteering>(
 		std::vector<BlendedSteering::WeightedBehavior>
 	{
@@ -40,7 +37,6 @@ void ALevel_CombinedSteering::BeginPlay()
 	}
 	);
 
-	// Priority = Evade first, else Blended
 	Priority = std::make_unique<PrioritySteering>(
 		std::vector<ISteeringBehavior*>
 	{
@@ -51,18 +47,15 @@ void ALevel_CombinedSteering::BeginPlay()
 
 	CombinedAgent->SetSteeringBehavior(Priority.get());
 
-	// Initial debug state
 	WandererAgent->SetDebugRenderingEnabled(CanDebugRender);
 	CombinedAgent->SetDebugRenderingEnabled(CanDebugRender);
 
-	// Initial targets
 	SeekBehavior->SetTarget(MouseTarget);
 	EvadeBehavior->SetTarget(MakeTargetFromAgent(WandererAgent));
 }
 
 void ALevel_CombinedSteering::BeginDestroy()
 {
-	// release in "top-down" order
 	Priority.reset();
 	Blended.reset();
 
@@ -165,11 +158,9 @@ void ALevel_CombinedSteering::Tick(float DeltaTime)
 	}
 #pragma endregion
 
-	// --- Combined Steering Update ---
 	if (!IsValid(CombinedAgent) || !IsValid(WandererAgent))
 		return;
 
-	// Seek uses the mouse target (MouseTarget gets updated by the BP on click in this template)
 	if (SeekBehavior)
 		SeekBehavior->SetTarget(MouseTarget);
 
