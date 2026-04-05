@@ -4,7 +4,6 @@
 
 #include <Delegates/Delegate.h>
 
-
 class UWorld;
 
 /**

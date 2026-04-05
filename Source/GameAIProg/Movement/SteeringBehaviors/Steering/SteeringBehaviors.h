@@ -42,6 +42,8 @@ class Arrive : public ISteeringBehavior
 {
 public:
 	SteeringOutput CalculateSteering(float DeltaT, ASteeringAgent& Agent) override;
+	void SetTargetRadius(float Radius) { m_TargetRadius = Radius; }
+
 private:
 	float m_SlowRadius{ 250.f };
 	float m_TargetRadius{ 100.f };

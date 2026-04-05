@@ -6,10 +6,10 @@
 #include "Engine/LevelScriptActor.h"
 
 #include "ImGuiModule.h"
-#include "GameAIProg/Movement/SteeringBehaviors/SteeringHelpers.h"
-#include "GameAIProg/Movement/SteeringBehaviors/SteeringAgent.h"
-#include "GameAIProg/Shared/WorldTrimVolume.h"
-#include "Shared/ImGuiHelpers.h"
+#include "../Movement/SteeringBehaviors/SteeringAgent.h"
+#include "../Movement/SteeringBehaviors/SteeringHelpers.h"
+#include "../Shared/WorldTrimVolume.h"
+#include "../Shared/ImGuiHelpers.h"
 
 #include "Level_Base.generated.h"
 
