@@ -1,47 +1,38 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 using UnrealBuildTool;
+using System.IO;
 
 public class GameAIProg : ModuleRules
 {
-	public GameAIProg(ReadOnlyTargetRules Target) : base(Target)
-	{
-		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+    public GameAIProg(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		
-		
-		PublicDependencyModuleNames.AddRange(new string[] {
-			"Core",
-			"CoreUObject",
-			"Engine",
-			"InputCore",
-			"EnhancedInput",
-			"AIModule",
-			"NavigationSystem",
-			"StateTreeModule",
-			"GameplayStateTreeModule",
-			"Niagara",
-			"UMG",
-			"Slate",
-			"ImGui",
-		});
+        bUseRTTI = true;
 
-		PrivateDependencyModuleNames.AddRange(new string[] { });
+        PublicDependencyModuleNames.AddRange(new string[]
+        {
+            "Core",
+            "CoreUObject",
+            "Engine",
+            "InputCore",
+            "EnhancedInput",
+            "AIModule",
+            "NavigationSystem",
+            "StateTreeModule",
+            "GameplayStateTreeModule",
+            "Niagara",
+            "UMG",
+            "Slate",
+            "ImGui",
+            "Navmesh",
+        });
 
-        PublicIncludePaths.AddRange(new string[] {
-		"GameAIProg",
-		ModuleDirectory,
-		System.IO.Path.Combine(ModuleDirectory, "Shared"),
-		System.IO.Path.Combine(Target.RelativeEnginePath, "Source/Runtime/Engine/Public"),
-		});
-
-
-        // Uncomment if you are using Slate UI
-        // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-
-        // Uncomment if you are using online features
-        // PrivateDependencyModuleNames.Add("OnlineSubsystem");
-
-        // To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+        PublicIncludePaths.AddRange(new string[]
+        {
+            ModuleDirectory,
+            Path.Combine(ModuleDirectory, "Shared"),
+            Path.Combine(ModuleDirectory, "GraphTheory"),
+            Path.Combine(ModuleDirectory, "Movement"),
+        });
     }
 }
