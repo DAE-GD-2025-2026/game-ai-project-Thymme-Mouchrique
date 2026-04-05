@@ -1,7 +1,8 @@
-#include "GraphTheory/Level_GraphTheory.h"
+#include "Level_GraphTheory.h"
 
 #include "Algorithms/EulerianPath.h"
-#include "Shared/GameAISpectator.h"
+#include "../Shared/GameAISpectator.h"
+
 
 using namespace GameAI;
 

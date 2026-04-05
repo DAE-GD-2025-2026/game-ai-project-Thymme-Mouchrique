@@ -4,34 +4,55 @@
 
 namespace GameAI
 {
-	class IGraphNodeFactory
-	{
-	public:
-		IGraphNodeFactory() = default;
-		virtual ~IGraphNodeFactory() = default;
+    class IGraphNodeFactory
+    {
+    public:
+        IGraphNodeFactory() = default;
+        virtual ~IGraphNodeFactory() = default;
 
-		virtual std::unique_ptr<Node> const CreateNode(FVector2D const & Position) const = 0;
-		virtual std::unique_ptr<Node> const CloneNode(Node const & Other) const = 0;
-	};
-	
-	template <typename NodeType>
-	requires GameAI::is_drawable_node<NodeType> && std::derived_from<NodeType, Node>
-	class GraphNodeFactory : public IGraphNodeFactory
-	{
-	public:
-		
-		virtual ~GraphNodeFactory() override = default;
-		virtual std::unique_ptr<Node> const CreateNode(const FVector2D& Position) const override
-		{
-			// You would need to make your own implementation of this
-			return std::unique_ptr<Node>(new NodeType(Position));
-		}
-		virtual std::unique_ptr<Node> const CloneNode(const Node& Other) const override
-		{
-			// You would need to make your own implementation of this
-			return std::unique_ptr<Node>(new NodeType(Other));
-		}
-	};
+        virtual std::unique_ptr<Node> const CreateNode(FVector2D const& Position) const = 0;
+        virtual std::unique_ptr<Node> const CloneNode(Node const& Other) const = 0;
+    };
+
+    // Generic factory for any NodeType
+    template <typename NodeType>
+        requires GameAI::is_drawable_node<NodeType>&& std::derived_from<NodeType, Node>
+    class GraphNodeFactory : public IGraphNodeFactory
+    {
+    public:
+        virtual ~GraphNodeFactory() override = default;
+
+        virtual std::unique_ptr<Node> const CreateNode(const FVector2D& Position) const override
+        {
+            return std::unique_ptr<Node>(new NodeType(Position));
+        }
+
+        virtual std::unique_ptr<Node> const CloneNode(const Node& Other) const override
+        {
+            auto AsNodeType = static_cast<const NodeType*>(&Other);
+            return std::unique_ptr<Node>(new NodeType(*AsNodeType));
+        }
+    };
+
+    // Factory specifically for TerrainNode
+    class TerrainNodeFactory : public IGraphNodeFactory
+    {
+    public:
+        virtual ~TerrainNodeFactory() override = default;
+
+        virtual std::unique_ptr<Node> const CreateNode(const FVector2D& Position) const override
+        {
+            return std::unique_ptr<Node>(new TerrainNode(Position));
+        }
+
+        virtual std::unique_ptr<Node> const CloneNode(const Node& Other) const override
+        {
+            auto AsTerrainNode = static_cast<const TerrainNode*>(&Other);
+            return std::unique_ptr<Node>(new TerrainNode(*AsTerrainNode));
+        }
+    };
+}
+
 	
 	/*
 	 * Template specialization example
@@ -53,4 +74,3 @@ namespace GameAI
 			}
 		};
 	 */
-}
