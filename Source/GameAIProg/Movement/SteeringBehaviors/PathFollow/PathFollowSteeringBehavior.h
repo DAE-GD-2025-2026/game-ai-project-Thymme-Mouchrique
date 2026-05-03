@@ -10,6 +10,7 @@ public:
 	PathFollow();
 	virtual ~PathFollow() override;
 	void SetPath(std::vector<FVector2D>& path);
+	void Reset();
 	virtual SteeringOutput CalculateSteering(float DeltaTime, ASteeringAgent & Agent) override;
 
 private:
